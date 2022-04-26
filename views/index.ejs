@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="icon.png"/>
+  <title>CoinCompare</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="theme.css" type="text/css">
+
+  <!-- Include Handlebars from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <!-- Include axios from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- import the webpage's client-side javascript file (script.js) -->
+  <script src="./script.js" defer></script>
+
+</head>
+
+<body>
+  <div class="">
+    <div class="container-fluid">
+      <div <% if( coins.selected ){%> <%="hidden"%> <%}%> class="row pt-5 mt-5 pb-2">
+        <div class="col-md-12">
+          <h1 class="display-3 text-center font-weight-bold text-white">Welcome to CoinCompare</h1>
+        </div>
+      </div>
+      <form name="coinOptions" action="/" method="post">
+        <div class="row py-2">
+          <div class="col-md-1"></div>
+          <div class="col-md-5 my-3">
+            <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons" id="coinSelector" >
+              <label class="btn btn-outline-primary rounded-pill mr-1 border-2 font-weight-bolder <% if( coins.value === "BTC" ){%> <%="active"%> <%}%>">
+                <input type="radio" name="coins" id="BTC" value="BTC" autocomplete="off" <% if( coins.value === "BTC" ){%> <%="checked"%> <%}%>>
+                <h4 class="font-weight-bolder">BTC</h4>
+              </label>
+              <label class="btn btn-outline-primary rounded-pill mx-1 border-2 font-weight-bolder <% if( coins.value === "ETH" ){%> <%="active"%> <%}%>">
+                <input type="radio" name="coins" id="ETH" value="ETH" autocomplete="off" <% if( coins.value === "ETH" ){%> <%="checked"%> <%}%>>
+                <h4 class="font-weight-bolder">ETH</h4>
+              </label>
+              <label class="btn btn-outline-primary rounded-pill mx-1 border-2 font-weight-bolder <% if( coins.value === "SOL" ){%> <%="active"%> <%}%>">
+                <input type="radio" name="coins" id="SOL" value="SOL" autocomplete="off" <% if( coins.value === "SOL" ){%> <%="checked"%> <%}%>>
+                <h4 class="font-weight-bolder">SOL</h4>
+              </label>
+              <label class="btn btn-outline-primary rounded-pill mx-1 border-2 font-weight-bolder <% if( coins.value === "ADA" ){%> <%="active"%> <%}%>" >
+                <input type="radio" name="coins" id="ADA" value="ADA" autocomplete="off" <% if( coins.value === "ADA" ){%> <%="checked"%> <%}%>>
+                <h4 class="font-weight-bolder">ADA</h4>
+              </label>
+              <label class="btn btn-outline-primary rounded-pill ml-1 border-2 font-weight-bolder <% if( coins.value === "SHIB" ){%> <%="active"%> <%}%>">
+                <input type="radio" name="coins" id="SHIB" value="SHIB" autocomplete="off" <% if( coins.value === "SHIB" ){%> <%="checked"%> <%}%>>
+                <h4 class="font-weight-bolder">SHIB</h4>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2 my-3">
+            <div class="input-group input-group-lg my-1">
+              <input type="number" class="form-control" placeholder="1" step="0.001" min="0" name="quantity" value=<%= arbitrage.quan %>>
+            </div>
+          </div>
+          <div class="col-md-2 my-3">
+            <button id="priceBtn" class="btn btn-dark btn-block rounded-pill border border-2 border-light text-light font-weight-bolder">
+              <h4 class="font-weight-bolder">GET PRICE</h4>
+            </button>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </form>
+      
+      <h1 <% if( coins.selected ){%> <%="hidden"%> <%}%> class="text-center text-light"><%= coins.value %></h1>> 
+      
+      <div <% if( !coins.selected ){%> <%="hidden"%> <%}%> class="row py-2 mb-5 px-4">
+
+        <% for(var i=0;i<4;i++) { %>
+            <div class="col-md rounded-lg bg-primary mx-2 px-3">
+                <h1 class="text-center my-3 font-weight-bold"> <%= obj[i].exchangeName %> </h1>
+                <div class="table-responsive">
+                <table class="table table-dark table-striped table-borderless">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Coin Price</th>
+                        <td class="text-right"> <%= obj[i].coinPrice %> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Brokerage (for 1 coin)</th>
+                        <td class="text-right"> <%= obj[i].brokerage %> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Deposit Fee (for 1 coin)</th>
+                        <td class="text-right"> <%= obj[i].depositFee %> </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Cost (for 1 coin)</th>
+                      <td class="text-right"> <%= obj[i].totalFor1 %> </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Quantity Multiplier</th>
+                      <td class="text-right"> <%= arbitrage.quan %> </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="pl-3">TOTAL COST</th>
+                      <td class="text-right"> <%= obj[i].totalForN %> </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        <% } %>
+
+      </div>
+      
+      
+      <% if( coins.selected && arbitrage.profit>0 ){ %>  
+        <h1 class="text-light display-3 font-weight-bold text-center">BEST ARBITRAGE OPPORTUNITY</h1>
+        <h1 class="text-light text-center">Buy from <%= obj[arbitrage.lIndex].exchangeName %> - Sell to <%= obj[arbitrage.hIndex].exchangeName %></h1>
+        <h1 class="text-light text-center">Total Profit : $ <%= arbitrage.profit %></h1>
+      <% } %>
+
+      <% if( coins.selected && arbitrage.profit<=0 ){ %>  
+        <h1 class="text-light display-3 font-weight-bolder text-center">NO arbitrage opportunity available</h1>
+      <% } %>
+    
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

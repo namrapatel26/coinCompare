@@ -1,0 +1,19 @@
+{
+  "name": "coincompare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.3",
+    "axios": "^0.26.1",
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.6",
+    "ejss": "^1.2.3",
+    "express": "^4.17.3"
+  }
+}
